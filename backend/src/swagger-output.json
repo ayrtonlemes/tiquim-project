@@ -1,0 +1,1092 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API do Tiquim",
+    "description": "Documentação da API",
+    "version": "1.0.0"
+  },
+  "host": "localhost:9000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/v1/language/": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lang": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/v1/user/": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Lista todos os usuários.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": ["User"],
+        "summary": "Cria um usuário novo.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "userType",
+            "description": "Tipo do usuário",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateUserDto"
+            }
+          },
+          {
+            "name": "req",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/user/{id}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Mostra um usuário com base no ID.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do usuário"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": ["User"],
+        "summary": "Modifica os atributos de um usuário.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do usuário"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateUsuarioDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "summary": "Apaga um usuário com base no ID.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do usuário"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/v1/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Cria um usuário.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "tipoUsuario",
+            "description": "Tipo do usuário",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateUsuarioDto"
+            }
+          },
+          {
+            "name": "req",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Usr"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Faz a sessão do usuário.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/LoginDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/UsuarioDto"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Desfazer a sessão do usuário.",
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/v1/auth/logged": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Retorna o usuário logado.",
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/v1/campaign/": {
+      "get": {
+        "tags": ["Campaign"],
+        "summary": "Cria um usuário novo.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "tipoUsuario",
+            "description": "Tipo do usuário",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateUsuarioDto"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Campaign"],
+        "summary": "Cria um usuário novo.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "tipoUsuario",
+            "description": "Tipo do usuário",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateUsuarioDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/campaign/user": {
+      "get": {
+        "tags": ["Campaign"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/v1/campaign/{id}": {
+      "get": {
+        "tags": ["Campaign"],
+        "summary": "Cria um usuário novo.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "tipoUsuario",
+            "description": "Tipo do usuário",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateUsuarioDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Campaign"],
+        "summary": "Modifica os atributos de um usuário.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do usuário"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateUsuarioDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Campaign"],
+        "summary": "Apaga um usuário com base no ID.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do usuário"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/v1/paymentMethod/": {
+      "get": {
+        "tags": ["PaymentMethod"],
+        "summary": "Cria um usuário novo.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "tipoUsuario",
+            "description": "Tipo do usuário",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateUsuarioDto"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": ["PaymentMethod"],
+        "summary": "Cria um usuário novo.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "tipoUsuario",
+            "description": "Tipo do usuário",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateUsuarioDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/paymentMethod/{id}": {
+      "get": {
+        "tags": ["PaymentMethod"],
+        "summary": "Cria um usuário novo.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "tipoUsuario",
+            "description": "Tipo do usuário",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateUsuarioDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": ["PaymentMethod"],
+        "summary": "Modifica os atributos de um usuário.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do usuário"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateUsuarioDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["PaymentMethod"],
+        "summary": "Apaga um usuário com base no ID.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do usuário"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/v1/contribution/": {
+      "get": {
+        "tags": ["Contributions"],
+        "summary": "Lista as contribuições",
+        "description": "",
+        "parameters": [
+          {
+            "name": "ampaign",
+            "in": "query",
+            "description": "ID da campanha para filtrar as contribuições",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "Número de contribuições a pular (para paginação)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "description": "Número de contribuições a retornar",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "campaign",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de contribuições",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "array"
+                },
+                "items": {
+                  "$ref": "#/definitions/Contribution"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Contributions"],
+        "summary": "Cria uma nova contribuição",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Dados da nova contribuição",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateContributionDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contribuição criada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/Contribution"
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/v1/contribution/{id}": {
+      "get": {
+        "tags": ["Contributions"],
+        "summary": "Obtém uma contribuição específica",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da contribuição"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados da contribuição",
+            "schema": {
+              "$ref": "#/definitions/Contribution"
+            }
+          },
+          "404": {
+            "description": "Contribuição não encontrada"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/v1/reward/": {
+      "get": {
+        "tags": ["Reward"],
+        "summary": "Lista as recompensas",
+        "description": "",
+        "parameters": [
+          {
+            "name": "campaign",
+            "in": "query",
+            "description": "ID da campanha para filtrar as recompensas",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "Número de recompensas a pular (para paginação)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "description": "Número de recompensas a retornar",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de recompensas",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "array"
+                },
+                "items": {
+                  "$ref": "#/definitions/Reward"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Reward"],
+        "summary": "Cria uma nova recompensa",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Dados da nova recompensa",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateRewardDto"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Recompensa criada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/Reward"
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/v1/reward/{id}": {
+      "get": {
+        "tags": ["Reward"],
+        "summary": "Obtém uma recompensa específica",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da recompensa"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados da recompensa",
+            "schema": {
+              "$ref": "#/definitions/Reward"
+            }
+          },
+          "404": {
+            "description": "Recompensa não encontrada"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Reward"],
+        "summary": "Atualiza uma recompensa",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da recompensa"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Dados atualizados da recompensa",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateRewardDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recompensa atualizada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/Reward"
+            }
+          },
+          "404": {
+            "description": "Recompensa não encontrada"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Reward"],
+        "summary": "Deleta uma recompensa",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da recompensa"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recompensa deletada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/Reward"
+            }
+          },
+          "404": {
+            "description": "Recompensa não encontrada"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreateProdutoDto": {
+      "type": "object",
+      "properties": {
+        "nome": {
+          "type": "string",
+          "example": "Martelo"
+        },
+        "preco": {
+          "type": "number",
+          "example": 29
+        },
+        "estoque": {
+          "type": "number",
+          "example": 10
+        }
+      }
+    },
+    "UpdateProdutoDto": {
+      "type": "object",
+      "properties": {
+        "nome": {
+          "type": "string",
+          "example": "Martelo"
+        },
+        "preco": {
+          "type": "number",
+          "example": 35
+        },
+        "estoque": {
+          "type": "number",
+          "example": 5
+        }
+      }
+    },
+    "Produto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "8a2053de-5d92-4c43-97c0-c9b2b0d56703"
+        },
+        "nome": {
+          "type": "string",
+          "example": "Bacon"
+        },
+        "preco": {
+          "type": "number",
+          "example": 261
+        },
+        "estoque": {
+          "type": "number",
+          "example": 1
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2023-11-07T19:27:15.645Z"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2023-11-07T19:27:15.645Z"
+        }
+      }
+    },
+    "ChangeLangDto": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "type": "string",
+          "example": "pt-BR"
+        }
+      }
+    },
+    "CreateUsuarioDto": {
+      "type": "object",
+      "properties": {
+        "nome": {
+          "type": "string",
+          "example": "Allan"
+        },
+        "email": {
+          "type": "string",
+          "example": "aca@gmail.com"
+        },
+        "senha": {
+          "type": "string",
+          "example": "admin123"
+        }
+      }
+    },
+    "UpdateUsuarioDto": {
+      "type": "object",
+      "properties": {
+        "nome": {
+          "type": "string",
+          "example": "Allan"
+        },
+        "email": {
+          "type": "string",
+          "example": "aca@gmail.com"
+        },
+        "senha": {
+          "type": "string",
+          "example": "admin123"
+        }
+      }
+    },
+    "QuantidadeCompra": {
+      "type": "object",
+      "properties": {
+        "quantidade": {
+          "type": "number",
+          "example": 2
+        }
+      }
+    },
+    "Usuario": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "446df175-5adc-4290-b084-d6a7be2fbf7d"
+        },
+        "nome": {
+          "type": "string",
+          "example": "Dr. Marion Barrows"
+        },
+        "email": {
+          "type": "string",
+          "example": "Brigitte_Bartoletti@yahoo.com"
+        },
+        "senha": {
+          "type": "string",
+          "example": "$2a$10$w.yG6xAQOiDeDJfMK07p9Oz/q7dXY81D8p4rW0L5KKGhSYZS5CVwS"
+        },
+        "tipo_usuario_id": {
+          "type": "string",
+          "example": "399012f7-a62a-4a67-84de-c77deab96b71"
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2024-05-02T02:16:16.190Z"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2024-05-02T02:16:16.190Z"
+        }
+      }
+    },
+    "CompraDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "0b86ebc5-b012-46dd-9081-2896556eaabb"
+        },
+        "usuario_id": {
+          "type": "string",
+          "example": "0b4600b5-68cf-40fa-9af0-d5f9a7e0d410"
+        },
+        "produto_id": {
+          "type": "string",
+          "example": "9eebd43e-8feb-4306-bdaf-2887814a9c62"
+        },
+        "quantidade": {
+          "type": "number",
+          "example": 4
+        }
+      }
+    },
+    "Compra": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "0b86ebc5-b012-46dd-9081-2896556eaabb"
+        },
+        "usuario_id": {
+          "type": "string",
+          "example": "0b4600b5-68cf-40fa-9af0-d5f9a7e0d410"
+        },
+        "produto_id": {
+          "type": "string",
+          "example": "9eebd43e-8feb-4306-bdaf-2887814a9c62"
+        },
+        "quantidade": {
+          "type": "number",
+          "example": 4
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2024-05-06T04:49:55.331Z"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2024-05-06T04:49:55.331Z"
+        }
+      }
+    },
+    "LoginDto": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "Richie74@yahoo.com"
+        },
+        "senha": {
+          "type": "string",
+          "example": "admin123"
+        }
+      }
+    }
+  }
+}

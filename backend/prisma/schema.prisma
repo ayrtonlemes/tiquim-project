@@ -1,0 +1,237 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String           @id @default(uuid()) @db.Char(36)
+  name           String           @db.VarChar(100)
+  email          String           @unique @db.VarChar(100)
+  password       String           @db.VarChar(60)
+  avatarUrl      String?          @map("avatar_url") @db.VarChar(255)
+  userTypeId     String           @map("user_type_id") @db.Char(36)
+  city           String           @db.VarChar(50)
+  state          String           @db.Char(2)
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  campaigns      Campaign[]
+  contributions  Contribution[]
+  addresses      Address[]
+  messages       Message[]
+  posts          Post[]
+  userType       UserType         @relation(fields: [userTypeId], references: [id])
+  userRewards    UserReward[]
+  Comment        Comment[]
+  CommentReport  reportComment[]
+  reportCampaign reportCampaign[]
+  CreditCards    CreditCard[]
+  @@index([userTypeId], map: "users_user_type_id_fkey")
+  @@map("users")
+}
+
+model UserType {
+  id    String @id @default(uuid()) @db.Char(36)
+  label String @db.Char(8)
+  users User[]
+
+  @@map("user_types")
+}
+
+model Address {
+  id        String   @id @default(uuid()) @db.Char(36)
+  number    String   @db.VarChar(5)
+  cep       String   @db.Char(8)
+  city      String   @db.VarChar(100)
+  uf        String   @db.Char(2)
+  userId    String   @map("user_id") @db.Char(36)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "addresses_user_id_fkey")
+  @@map("addresses")
+}
+
+model Campaign {
+  id             String           @id @default(uuid()) @db.Char(36)
+  goal           Decimal          @db.Decimal(10, 2)
+  deadline       DateTime         @db.DateTime(0)
+  title          String           @db.VarChar(50)
+  description    String           @db.VarChar(1000)
+  preview        String           @db.VarChar(120)
+  category       String           @db.VarChar(50)
+  city           String           @db.VarChar(50)
+  state          String           @db.VarChar(20)
+  imageUrl       String?          @map("image_url") @db.VarChar(255)
+  userId         String           @map("user_id") @db.Char(36)
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  user           User             @relation(fields: [userId], references: [id])
+  contributions  Contribution[]
+  messages       Message[]
+  posts          Post[]
+  rewards        Reward[]
+  Comment        Comment[]
+  reportCampaign reportCampaign[]
+
+  @@index([userId], map: "campaigns_user_id_fkey")
+  @@map("campaigns")
+}
+
+model Contribution {
+  id              String        @id @default(uuid()) @db.Char(36)
+  amount          Decimal       @db.Decimal(10, 2)
+  userId          String        @map("user_id") @db.Char(36)
+  campaignId      String        @map("campaign_id") @db.Char(36)
+  paymentMethodId String        @map("payment_method_id") @db.Char(36)
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+  campaign        Campaign      @relation(fields: [campaignId], references: [id])
+  paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+  user            User          @relation(fields: [userId], references: [id])
+
+  @@index([campaignId], map: "contributions_campaign_id_fkey")
+  @@index([paymentMethodId], map: "contributions_payment_method_id_fkey")
+  @@index([userId], map: "contributions_user_id_fkey")
+  @@map("contributions")
+}
+
+model PaymentMethod {
+  id                String         @id @default(uuid()) @db.Char(36)
+  paymentTypeId     String         @map("payment_type_id") @db.VarChar(36) //CREDIT || PIX
+  createdAt         DateTime       @default(now()) @map("created_at")
+  updatedAt         DateTime       @updatedAt @map("updated_at")
+  contributions     Contribution[]
+  paymentMethodType PaymentMethodType @relation(fields: [paymentTypeId], references: [id])
+  
+  @@index([paymentTypeId], map: "payment_method_type_id_fkey")
+  @@map("payment_methods")
+}
+
+model PaymentMethodType {
+  id  String  @id @default(uuid()) @db.Char(36)
+  label String @db.Char(8)
+  paymentMethod PaymentMethod[]
+
+  @@map("payment_method_type")
+}
+
+model CreditCard {
+  id             String        @id @default(uuid()) @db.Char(36)
+  userId         String        @map("user_id") @db.Char(36)
+  cardNumber     String        @db.VarChar(60)
+  cardHolderName String        @db.VarChar(100) 
+  cardLastDigits String        @db.Char(4)
+  cardExpiryDate String        @db.Char(5)
+  cvv            String        @db.Char(3)
+  user           User          @relation(fields: [userId], references: [id])
+  @@map("credit_card")
+}
+model Reward {
+  id            String       @id @default(uuid()) @db.Char(36)
+  title         String       @db.VarChar(50)
+  description   String       @db.VarChar(100)
+  minimumAmount Decimal      @map("minimum_amount") @db.Decimal(9, 2)
+  imageUrl      String?      @map("image_url") @db.VarChar(200)
+  campaignId    String       @map("campaign_id") @db.Char(36)
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+  campaign      Campaign     @relation(fields: [campaignId], references: [id])
+  userRewards   UserReward[]
+
+  @@index([campaignId], map: "rewards_campaign_id_fkey")
+  @@map("rewards")
+}
+
+model UserReward {
+  id        String   @id @default(uuid()) @db.Char(36)
+  rewardId  String   @map("reward_id") @db.Char(36)
+  userId    String   @map("user_id") @db.Char(36)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  reward    Reward   @relation(fields: [rewardId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([rewardId], map: "userRewardsRewardId_fkey")
+  @@index([userId], map: "userRewardsUserId_fkey")
+  @@map("user_rewards")
+}
+
+model Post {
+  id          String   @id @default(uuid()) @db.Char(36)
+  title       String?  @db.VarChar(100)
+  description String?  @db.VarChar(500)
+  userId      String   @map("user_id") @db.Char(36)
+  campaignId  String   @map("campaign_id") @db.Char(36)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  campaign    Campaign @relation(fields: [campaignId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([campaignId], map: "postsCampaignId_fkey")
+  @@index([userId], map: "postsUserId_fkey")
+  @@map("posts")
+}
+
+model Message {
+  id         String   @id @default(uuid()) @db.Char(36)
+  text       String   @db.VarChar(200)
+  userId     String   @map("user_id") @db.Char(36)
+  campaignId String   @map("campaign_id") @db.Char(36)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@index([campaignId], map: "messagesCampaignId_fkey")
+  @@index([userId], map: "messagesUserId_fkey")
+  @@map("messages")
+}
+
+model Comment {
+  id            String          @id @default(uuid()) @db.Char(36)
+  text          String          @db.VarChar(200)
+  userId        String          @map("user_id") @db.Char(36)
+  campaignId    String          @map("campaign_id") @db.Char(36)
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  campaign      Campaign        @relation(fields: [campaignId], references: [id])
+  user          User            @relation(fields: [userId], references: [id])
+  CommentReport reportComment[]
+
+  @@index([campaignId], map: "commentsCampaignId_fkey")
+  @@index([userId], map: "commentsUserId_fkey")
+  @@map("comments")
+}
+
+model reportComment {
+  id        String   @id @default(uuid()) @db.Char(36)
+  commentId String   @map("comment_id") @db.Char(36)
+  userId    String   @map("user_id") @db.Char(36)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([commentId], map: "reportComments_fkey")
+  @@map("report_comments")
+}
+
+model reportCampaign {
+  id         String   @id @default(uuid()) @db.Char(36)
+  campaignId String   @map("campaign_id") @db.Char(36)
+  reason     String   @db.VarChar(500)
+  userId     String   @map("user_id") @db.Char(36)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@index([campaignId], map: "reportCampaigns_fkey")
+  @@map("report_campaigns")
+}

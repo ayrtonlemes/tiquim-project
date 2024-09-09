@@ -1,0 +1,46 @@
+{
+  "name": "tiquim",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "npx prettier --write src/app"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^5.15.20",
+    "@mui/material": "^5.16.6",
+    "@mui/x-charts": "^7.8.0",
+    "@mui/x-date-pickers": "^7.12.0",
+    "@tanstack/react-query": "^5.36.0",
+    "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
+    "js-cookie": "^3.0.5",
+    "next": "14.2.3",
+    "prettier": "^3.2.5",
+    "qrcode.react": "^3.1.0",
+    "react": "^18",
+    "react-credit-cards-2": "^1.0.2",
+    "react-dom": "^18",
+    "react-hook-form": "^7.51.4",
+    "react-material-ui-carousel": "^3.4.2",
+    "react-number-format": "^5.4.0",
+    "react-query": "^3.39.3",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "typescript": "^5"
+  }
+}
